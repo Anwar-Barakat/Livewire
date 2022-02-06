@@ -31,10 +31,10 @@
                     <td class="px-6 py-3 border-b-2 border-gray-200 text-left">{{ $post->title }}</td>
                     <td class="px-6 py-3 border-b-2 border-gray-200 ">
                         <div class="flex items-center py-3 justify-end text-right">
-                            <x-jet-button class="mr-3">
+                            <x-jet-button class="mr-3" wire:click="showUpdateModal({{ $post->id }})">
                                 {{ __('edit') }}
                             </x-jet-button>
-                            <x-jet-danger-button>
+                            <x-jet-danger-button wire:click="showModalDelete({{ $post->id }})">
                                 {{ __('delete') }}
                             </x-jet-danger-button>
                         </div>
@@ -53,7 +53,7 @@
 
     <x-jet-dialog-modal wire:model="modalFormVisible">
         <x-slot name="title">
-            {{ __('Create Post') }}
+            {{ $modalId ? __('Edit Post') : __('Create Post') }}
         </x-slot>
         <x-slot name="content">
             <div class="mt-5">
@@ -99,10 +99,20 @@
                     value="{{ __('Image') }}"></x-jet-label>
                 @if ($post_image)
                     <div class="py-3">
-                        <div class="mt-2 flex rounded-md shadow-md">
+                        <div class="mt-2 flex rounded-md">
                             <span
                                 class="inline-flex items-center p-3 rounded border border-gray-300 bg-gray-50 text-gray-500 text-sm">
                                 <img src="{{ $post_image->temporaryUrl() }}" alt="" width="200">
+                            </span>
+                        </div>
+                    </div>
+                @endif
+                @if ($image)
+                    <div class="py-3">
+                        <div class="mt-2 flex rounded-md">
+                            <span
+                                class="inline-flex items-center p-3 rounded border border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                                <img src="{{ asset('images/' . $image) }}" alt="" width="200">
                             </span>
                         </div>
                     </div>
@@ -131,8 +141,28 @@
 
         </x-slot>
         <x-slot name="footer">
-            <x-jet-secondary-button class="mr-2">{{ __('cancel') }}</x-jet-secondary-button>
-            <x-jet-button wire:click="store">{{ __('save') }}</x-jet-button>
+            <x-jet-secondary-button class="mr-2" wire:click="$toggle('modalFormVisible')">
+                {{ __('cancel') }}</x-jet-secondary-button>
+            @if ($modalId)
+                <x-jet-button wire:click="update">{{ __('update') }}</x-jet-button>
+            @else
+                <x-jet-button wire:click="store">{{ __('save') }}</x-jet-button>
+            @endif
+        </x-slot>
+
+    </x-jet-dialog-modal>
+
+    <x-jet-dialog-modal wire:model="confirmPostDelete">
+        <x-slot name="title">
+            {{ __('Delete Post') }}
+        </x-slot>
+        <x-slot name="content">
+            {{ __('Are You Sure The Deletion Process ??') }}
+        </x-slot>
+        <x-slot name="footer">
+            <x-jet-secondary-button class="mr-2" wire:click="$toggle('confirmPostDelete')">
+                {{ __('cancel') }}</x-jet-secondary-button>
+            <x-jet-danger-button wire:click="destroy">{{ __('delete') }}</x-jet-danger-button>
         </x-slot>
 
     </x-jet-dialog-modal>
