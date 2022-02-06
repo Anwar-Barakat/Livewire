@@ -16,10 +16,14 @@
     <table class="w-full divide-y divide-gray-200">
         <thead>
             <tr>
-                <th class="px-6 py-3 border-b-2 border-gray-200 text-left text-blue-500 tracking-wider">Id</th>
-                <th class="px-6 py-3 border-b-2 border-gray-200 text-left text-blue-500 tracking-wider ">Image</th>
-                <th class="px-6 py-3 border-b-2 border-gray-200 text-left text-blue-500 tracking-wider">Title</th>
-                <th class="px-6 py-3 border-b-2 border-gray-200 text-blue-500 tracking-wider">Actions</th>
+                <th class="px-6 py-3 border-b-2 border-gray-200 text-left text-blue-500 tracking-wider">
+                    {{ __('Id') }}</th>
+                <th class="px-6 py-3 border-b-2 border-gray-200 text-left text-blue-500 tracking-wider ">
+                    {{ __('Image') }}</th>
+                <th class="px-6 py-3 border-b-2 border-gray-200 text-left text-blue-500 tracking-wider">
+                    {{ __('Title') }}</th>
+                <th class="px-6 py-3 border-b-2 border-gray-200 text-blue-500 tracking-wider">
+                    {{ __('Actions') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -28,7 +32,11 @@
                     <td class="px-6 py-3 border-b-2 border-gray-200 text-left">{{ $post->id }}</td>
                     <td class="px-6 py-3 border-b-2 border-gray-200 text-left"><img
                             src="{{ asset('images/' . $post->image) }}" alt="{{ $post->title }}" width="60"></td>
-                    <td class="px-6 py-3 border-b-2 border-gray-200 text-left">{{ $post->title }}</td>
+                    <td class="px-6 py-3 border-b-2 border-gray-200 text-left">
+                        <a href="{{ route('show_post', $post->slug) }}" class="hover:text-indigo-600">
+                            {{ $post->title }}
+                        </a>
+                    </td>
                     <td class="px-6 py-3 border-b-2 border-gray-200 ">
                         <div class="flex items-center py-3 justify-end text-right">
                             <x-jet-button class="mr-3" wire:click="showUpdateModal({{ $post->id }})">
